@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  localssl-exporter:
-    image: localssl-exporter:v1.0
+  localcert-exporter:
+    image: localcert-exporter:v1.0
     # environment:
     #   - METRICS_PORT=9006
     volumes:
