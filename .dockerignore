@@ -2,3 +2,7 @@
 docker-compose.yml
 swarm-localssl-exporter.yml
 Dockerfile
+localcert-exporter-dashboard .jpg
+localcert-exporter-dashboard.json
+README
+requirements_deb

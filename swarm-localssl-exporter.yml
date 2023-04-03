@@ -1,17 +1,15 @@
-version: '3.9'
-
+version: "3.9"
 services:
-  localcert-exporter:
+  shell-exporter:
     image: hetimop/localcert-exporter:v1.0
-    # environment:
-    #   - METRICS_PORT=9006
-    volumes:
-      - /etc/certs:/etc/certs:ro
+    environment:
+      - METRICS_PORT=9006
     ports:
-        - target: 9999
-          published: 9999
-    #     - target: 9006
-    #       published: 9006        
+      - target: 9006 
+        published: 9006 
+        mode: host
+    volumes:
+      - /etc/certs:/etc/certs 
     deploy:
       mode: global
       resources:

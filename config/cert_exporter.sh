@@ -19,8 +19,9 @@ while IFS= read -r -d '' cert_file; do
         remaining_days=$(( ($(date +%s --date="$not_after") - $(date +%s)) / 86400 ))
 
         # Output the metrics
-        echo "local_cert_valide{cert_file=\"$cert_file\",url=\"$url\",serial=\"$serial\",issuer=\"$issuer\",remaining_days=\"$remaining_days\"} 1"
-        echo "local_cert_not_before{cert_file=\"$cert_file\",url=\"$url\",serial=\"$serial\"} $(date +%s --date="$not_before")"
-        echo "local_cert_expiration_date{cert_file=\"$cert_file\",url=\"$url\",serial=\"$serial\"} $(date +%s --date="$not_after")"
+        echo "cert_info{cert_file=\"$cert_file\",url=\"$url\",serial=\"$serial\",issuer=\"$issuer\",not_before=\"$not_before\",not_after=\"$not_after\",remaining_days=\"$remaining_days\"} 1"
     fi
 done < <(find /etc/certs/ -name "*cert.pem" -print0)
+
+exit 0
+

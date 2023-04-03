@@ -1,22 +1,22 @@
 FROM debian:bullseye-20230320-slim
 
-COPY . /app/
+# Add image information
+LABEL \
+    category="shell-exporter" \
+    maintainers="Hetimop"
 
-RUN : \
-    && chmod +x /app/* \
-    && apt-get update -qq \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y -qqq --no-install-recommends \
-      xinetd openssl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/ \
-    && mv /app/pwn /etc/xinetd.d/pwn \
-    && useradd --shell /bin/false pwn \
-    && :
+# Install requirements
+COPY requirements_deb .
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get install -y --no-install-recommends  $(sed -e '/^#/d' requirements_deb) && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+COPY ./config/wrapper_metrics ./config/*.sh /app/scripts/
+COPY ./config/pwn /etc/xinetd.d/pwn
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /app/scripts/* && \
+    chmod +x /usr/local/bin/entrypoint.sh
 
-ENV METRICS_PORT 9999
-EXPOSE  ${METRICS_PORT}
-
-
-CMD ["/app/entrypoint.sh"]
+CMD [ "/usr/local/bin/entrypoint.sh"]
