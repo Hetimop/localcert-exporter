@@ -2,6 +2,8 @@ version: "3.9"
 services:
   shell-exporter:
     image: hetimop/localcert-exporter:v1.0
+    restart_policy:
+      condition: any
     environment:
       - METRICS_PORT=9006
     ports:
